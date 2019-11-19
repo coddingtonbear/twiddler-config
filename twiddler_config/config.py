@@ -86,9 +86,13 @@ class ChordMapping:
 
 
 class Chord:
-    def __init__(self, buttons: int, chords: List[ChordMapping]):
+    def __init__(self, buttons: int, mappings: List[ChordMapping]):
         self._buttons = buttons
-        self._chords = chords
+        self._mappings = mappings
+
+    @property
+    def mappings(self) -> List[ChordMapping]:
+        return self._mappings
 
     @property
     def num(self) -> bool:
@@ -194,11 +198,11 @@ class Chord:
         return representation
 
     def __str__(self):
-        chord_strs = [
-            c.key_combination for c in self._chords
+        mapping_strs = [
+            f'<{c.key_combination}>' for c in self.mappings
         ]
-        chord_str = ', '.join(chord_strs)
-        return f'{self.representation} -> {chord_str}'
+        mapping_str = ''.join(mapping_strs)
+        return f'{self.representation} -> {mapping_str}'
 
     def __repr__(self):
         return f"<Chord {self}>"
