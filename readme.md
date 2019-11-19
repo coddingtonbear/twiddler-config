@@ -14,9 +14,14 @@ Usage:
 
 ## Command-line Utility
 
+The included command-line utility provides a variety of tools organized
+by subcommand described below.
+
+### `chords`: Displaying chords in a configuration
+
 You can print a brief description of your Twiddler configuration, including
 all of its included chords by running:
 
 ```
-    twiddler-config /path/to/my/twiddler.cfg
+    twiddler-config chords /path/to/my/twiddler.cfg
 ```

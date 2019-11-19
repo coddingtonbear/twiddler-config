@@ -5,17 +5,33 @@ import sys
 from .config import Config
 
 
+COMMANDS = {}
+
+
+def command(fn):
+    COMMANDS[fn.__name__] = fn
+
+
+@command
+def chords(argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('path', type=str)
+    args = parser.parse_args(argv)
+
+    cfg = Config.from_path(args.path)
+
+    for chord in cfg.chords:
+        print(chord)
+
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
     parser = argparse.ArgumentParser()
-    parser.add_argument('path', nargs=1, type=str)
+    parser.add_argument('command', choices=COMMANDS.keys())
+    args, extra = parser.parse_known_args(argv)
 
-    args = parser.parse_args(argv)
-    cfg = Config.from_path(args.path[0])
-
-    for chord in cfg.chords:
-        print(chord)
+    COMMANDS[args.command](extra)
 
 
 if __name__ == '__main__':
