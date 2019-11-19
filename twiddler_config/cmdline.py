@@ -1,37 +1,29 @@
 import argparse
-import os
 import sys
 
-from .config import Config
-
-
-COMMANDS = {}
-
-
-def command(fn):
-    COMMANDS[fn.__name__] = fn
-
-
-@command
-def chords(argv):
-    parser = argparse.ArgumentParser()
-    parser.add_argument('path', type=str)
-    args = parser.parse_args(argv)
-
-    cfg = Config.from_path(args.path)
-
-    for chord in cfg.chords:
-        print(chord)
+# Import all command classes to cause them to be registered
+from .commands import *  # noqa
+from .commands.base import COMMANDS
 
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
-    parser = argparse.ArgumentParser()
-    parser.add_argument('command', choices=COMMANDS.keys())
-    args, extra = parser.parse_known_args(argv)
 
-    COMMANDS[args.command](extra)
+    commands = {}
+    for name, cmd in COMMANDS.items():
+        commands[name] = cmd()
+
+    parser = argparse.ArgumentParser()
+
+    subparsers = parser.add_subparsers(dest='command')
+    for name, command in commands.items():
+        cmd_parser = subparsers.add_parser(name)
+        command.add_arguments(cmd_parser)
+
+    args = parser.parse_args(argv)
+
+    commands[args.command].handle(args)
 
 
 if __name__ == '__main__':
