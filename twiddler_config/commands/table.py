@@ -257,7 +257,8 @@ class Table(Command):
         text = texttable.Texttable(max_width=0)
         text.set_cols_align(('c', 'c', 'c'))
         text.set_cols_dtype(('t', 't', 't'))
-        #text.set_deco(0)
+        #text.set_deco(texttable.Texttable.VLINES)
+        #text.set_chars(('\u00a0', '\u00a0', '\u00a0', '\u00a0', ))
         text.add_rows(table)
         return text.draw()
 
@@ -315,11 +316,6 @@ class Table(Command):
 
         table = texttable.Texttable(max_width=0)
         table.set_cols_align(len(enumerations[0]) * ['c'])
-        table.set_deco(
-            texttable.Texttable.BORDER
-            | texttable.Texttable.VLINES
-            | texttable.Texttable.HLINES
-        )
         table.set_deco(0)
         for enumeration_row in enumerations:
             row = []
