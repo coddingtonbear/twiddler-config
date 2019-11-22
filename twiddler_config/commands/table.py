@@ -1,4 +1,5 @@
 import argparse
+import copy
 import sqlite3
 from typing import Dict, List
 
@@ -254,7 +255,7 @@ class Table(Command):
         return table
 
     def get_table_as_string(self, table):
-        text = texttable.Texttable(max_width=0)
+        text = texttable.Texttable(max_width=80)
         text.set_cols_align(('c', 'c', 'c'))
         text.set_cols_dtype(('t', 't', 't'))
         #text.set_deco(texttable.Texttable.VLINES)
@@ -270,6 +271,34 @@ class Table(Command):
             help="Print buttons from right to left instead of left to right",
             action='store_true',
             default=False
+        )
+        parser.add_argument(
+            '--num',
+            '-n',
+            help="Print table for when num is held",
+            action='store_true',
+            default=False,
+        )
+        parser.add_argument(
+            '--alt',
+            '-a',
+            help="Print table for when alt is held",
+            action='store_true',
+            default=False,
+        )
+        parser.add_argument(
+            '--ctrl',
+            '-c',
+            help="Print table for when ctrl is held",
+            action='store_true',
+            default=False,
+        )
+        parser.add_argument(
+            '--shift',
+            '-s',
+            help="Print table for when shift is held",
+            action='store_true',
+            default=False,
         )
 
     def handle(self, args: argparse.Namespace) -> None:
@@ -320,9 +349,19 @@ class Table(Command):
         for enumeration_row in enumerations:
             row = []
             for enumeration_instance in enumeration_row:
+                buttons_held = copy.copy(enumeration_instance)
+                if args.num:
+                    buttons_held.append(Button.num)
+                if args.alt:
+                    buttons_held.append(Button.alt)
+                if args.ctrl:
+                    buttons_held.append(Button.ctrl)
+                if args.shift:
+                    buttons_held.append(Button.shift)
+
                 row.append(
                     self.get_table_as_string(
-                        self.get_table(enumeration_instance)
+                        self.get_table(buttons_held)
                     )
                 )
 
