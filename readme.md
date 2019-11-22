@@ -17,7 +17,7 @@ Usage:
 The included command-line utility provides a variety of tools organized
 by subcommand described below.
 
-### `chords`: Displaying chords in a configuration
+### `chords`: Display all chords in a configuration
 
 You can print a brief description of your Twiddler configuration, including
 all of its included chords by running:
@@ -25,3 +25,17 @@ all of its included chords by running:
 ```
     twiddler-config chords /path/to/my/twiddler.cfg
 ```
+
+### `table`: Display chord tables
+
+You can print a chord tables in the style of Backspice2
+by running:
+
+```
+    twiddler-config table /path/to/my/twiddler.cfg
+```
+
+Optional arguments:
+
+* `--right-to-left`: Instead of printing chords in three columns
+  from left to right, print the columns in right-to-left order.

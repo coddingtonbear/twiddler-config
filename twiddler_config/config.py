@@ -13,6 +13,29 @@ class MouseClick(enum.Enum):
     left = 1
 
 
+class Button(enum.Enum):
+    num = 0
+    alt = 4
+    ctrl = 8
+    shift = 12
+
+    one_right = 1
+    one_middle = 2
+    one_left = 3
+
+    two_right = 5
+    two_middle = 6
+    two_left = 7
+
+    three_right = 9
+    three_middle = 10
+    three_left = 11
+
+    four_right = 13
+    four_middle = 14
+    four_left = 15
+
+
 class ChordMapping:
     def __init__(self, modifier_byte: int, keycode: int):
         self._modifier_byte = modifier_byte
@@ -96,67 +119,70 @@ class Chord:
 
     @property
     def num(self) -> bool:
-        return bool(self._buttons & 1 << 0)
+        return bool(self._buttons & 1 << Button.num.value)
 
     @property
     def alt(self) -> bool:
-        return bool(self._buttons & 1 << 4)
+        return bool(self._buttons & 1 << Button.alt.value)
 
     @property
     def ctrl(self) -> bool:
-        return bool(self._buttons & 1 << 8)
+        return bool(self._buttons & 1 << Button.ctrl.value)
 
     @property
     def shift(self) -> bool:
-        return bool(self._buttons & 1 << 12)
+        return bool(self._buttons & 1 << Button.shift.value)
 
     @property
     def one_right(self) -> bool:
-        return bool(self._buttons & 1 << 1)
+        return bool(self._buttons & 1 << Button.one_right.value)
 
     @property
     def one_middle(self) -> bool:
-        return bool(self._buttons & 1 << 2)
+        return bool(self._buttons & 1 << Button.one_middle.value)
 
     @property
     def one_left(self) -> bool:
-        return bool(self._buttons & 1 << 3)
+        return bool(self._buttons & 1 << Button.one_left.value)
 
     @property
     def two_right(self) -> bool:
-        return bool(self._buttons & 1 << 5)
+        return bool(self._buttons & 1 << Button.two_right.value)
 
     @property
     def two_middle(self) -> bool:
-        return bool(self._buttons & 1 << 6)
+        return bool(self._buttons & 1 << Button.two_middle.value)
 
     @property
     def two_left(self) -> bool:
-        return bool(self._buttons & 1 << 7)
+        return bool(self._buttons & 1 << Button.two_left.value)
 
     @property
     def three_right(self) -> bool:
-        return bool(self._buttons & 1 << 9)
+        return bool(self._buttons & 1 << Button.three_right.value)
 
     @property
     def three_middle(self) -> bool:
-        return bool(self._buttons & 1 << 10)
+        return bool(self._buttons & 1 << Button.three_middle.value)
 
     @property
     def three_left(self) -> bool:
-        return bool(self._buttons & 1 << 11)
+        return bool(self._buttons & 1 << Button.three_left.value)
 
     @property
     def four_right(self) -> bool:
-        return bool(self._buttons & 1 << 13)
+        return bool(self._buttons & 1 << Button.four_right.value)
 
     @property
     def four_middle(self) -> bool:
-        return bool(self._buttons & 1 << 14)
+        return bool(self._buttons & 1 << Button.four_middle.value)
 
     @property
     def four_left(self) -> bool:
-        return bool(self._buttons & 1 << 15)
+        return bool(self._buttons & 1 << Button.four_left.value)
+
+    def is_pressed(self, button: Button):
+        return bool(self._buttons & 1 << button.value)
 
     @property
     def representation(self) -> str:
