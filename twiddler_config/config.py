@@ -379,6 +379,9 @@ class Config:
             type_byte = chord_bytes[2]
             if type_byte == 0xff:
                 string_chord_count += 1
+        for mouse_action_int in [mouse_left_action, mouse_middle_action, mouse_right_action]:
+            if mouse_action_int & 0xff == 0xff:
+                string_chord_count += 1
 
         string_table_bytes = file_obj.read(string_chord_count * 4)
         string_table = [
